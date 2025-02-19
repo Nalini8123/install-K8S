@@ -6,6 +6,11 @@ Kubernetes Installation
 	3. sudo su -
 	4. curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
 	5. echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' > /etc/apt/sources.list.d/kubernetes.list
+	New steps	
+		sudo apt-get update
+		sudo apt-get install -y apt-transport-https ca-certificates curl
+		curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo tee /etc/apt/trusted.gpg.d/kubernetes.asc
+		sudo apt-get install -y docker.io
 	6. exit from sudo 
 	7. sudo apt update 
 	8. sudo apt install -y docker.io
@@ -53,7 +58,11 @@ Kubernetes Installation
 						
 	17. Login to worker nodes 
 		a. sudo su -
-		
+		docker cgroup driver configuration need to be updated 
+			1. add the below content to the file vi /etc/docker/daemon.json
+				{
+				  "exec-opts": ["native.cgroupdriver=systemd"]
+				}
 		b. systemctl daemon-reload 
 		   systemctl restart docker 
 	           systemctl restart kubectl 	
